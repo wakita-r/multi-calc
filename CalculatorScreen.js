@@ -3,7 +3,12 @@ import { View, Text, StyleSheet } from "react-native";
 import Button from "./Button";
 import Decimal from "decimal.js";
 
+class calcHistory {}
+
 const Calculator = () => {
+  const [historyList, setHistory] = useState([]); // 入力の履歴
+  const [formulaText, setFormulaText] = useState(null); // 計算式のテキスト
+
   const [value, setValue] = useState("0"); // 現在の入力値
   const [operator, setOperator] = useState(null); // 四則演算子
   const [prevValue, setPrevValue] = useState(null); // 前回の入力値
@@ -11,6 +16,10 @@ const Calculator = () => {
 
   // 数値押下時イベント
   const handleNumber = (number) => {
+    // 計算結果が式として表示されている場合は計算式を削除する
+    if (formulaText.charAt(formulaText.length - 1) === "=") {
+      setFormulaText("");
+    }
     if (value === "0" || isResult) {
       setValue(number.toString());
     } else {
@@ -24,6 +33,8 @@ const Calculator = () => {
     const calcValue1 = prevValue;
     const calcValue2 = parseFloat(value);
 
+    let formula = `${calcValue2} ${nextOperator}`;
+
     let nextPrevValue = parseFloat(value);
     let tmpResultString = "0";
 
@@ -31,8 +42,11 @@ const Calculator = () => {
       let tmpResult = calcFormula(calcValue1, calcValue2, operator);
       nextPrevValue = tmpResult;
       tmpResultString = tmpResult.toString();
+
+      formula = `${tmpResultString} ${nextOperator}`;
     }
 
+    setFormulaText(formula);
     setPrevValue(nextPrevValue);
     setOperator(nextOperator);
     setValue(tmpResultString);
@@ -55,22 +69,34 @@ const Calculator = () => {
     const decimalValue1 = new Decimal(val1);
     const decimalValue2 = new Decimal(val2);
 
+    let calcResult;
+
     switch (operator) {
       case "+":
-        return decimalValue1.plus(decimalValue2).toNumber();
+        calcResult = decimalValue1.plus(decimalValue2).toNumber();
+        break;
       case "-":
-        return decimalValue1.minus(decimalValue2).toNumber();
+        calcResult = decimalValue1.minus(decimalValue2).toNumber();
+        break;
       case "÷":
-        return decimalValue1.div(decimalValue2).toNumber();
+        calcResult = decimalValue1.div(decimalValue2).toNumber();
+        break;
       case "×":
-        return decimalValue1.times(decimalValue2).toNumber();
+        calcResult = decimalValue1.times(decimalValue2).toNumber();
+        break;
       default:
-        return 0;
+        calcResult = 0;
+        break;
     }
+
+    const formula = `${decimalValue1.toNumber()} ${operator} ${decimalValue2.toNumber()} =`;
+    setFormulaText(formula);
+    return calcResult;
   };
 
   // AC押下時イベント
   const handleClear = () => {
+    setFormulaText("");
     setValue("0");
     setIsResult(false);
     setOperator(null);
@@ -110,7 +136,7 @@ const Calculator = () => {
   return (
     <View style={styles.container}>
       <View style={styles.result}>
-        <Text style={styles.formulaText}>{getFormulaText()}</Text>
+        <Text style={styles.formulaText}>{formulaText}</Text>
       </View>
       <View style={styles.result}>
         <Text style={styles.resultText}>{getValueString()}</Text>
