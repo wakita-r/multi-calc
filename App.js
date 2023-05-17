@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Easing } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  Easing,
+  Pressable,
+} from "react-native";
 import Calculator from "./CalculatorScreen";
 import { NavigationContainer } from "@react-navigation/native";
+import { NativeBaseProvider, Box, Menu } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
@@ -9,40 +17,28 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   return (
     <View style={styles.container}>
-      <View style={{ height: 80 }}></View>
-      <NavigationContainer>
-        <Tab.Navigator screenOptions={tabOption}>
-          <Tab.Screen
-            name="①"
-            component={Calculator}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="②"
-            component={Calculator}
-            options={{ headerShown: false }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-      {/* <View style={styles.header}>
-        <TouchableOpacity onPress={toggleCalclator}>
-          <Text style={{ fontSize: 30 }}> {showFirst ? "電卓①" : "電卓②"}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={[styles.container, showFirst ? null : styles.hide]}>
-        <Calculator showFlg={true} />
-      </View>
-      <View style={[styles.container, showFirst ? styles.hide : null]}>
-        <Calculator showFlg={true} />
-      </View> */}
+      <NativeBaseProvider>
+        <View style={{ height: 80, backgroundColor: "gray" }}></View>
+        <NavigationContainer>
+          <Tab.Navigator screenOptions={tabOption}>
+            <Tab.Screen
+              name="①"
+              component={Calculator}
+              options={{ headerShown: false }}
+            />
+            <Tab.Screen
+              name="②"
+              component={Calculator}
+              options={{ headerShown: false }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </NativeBaseProvider>
     </View>
   );
 };
 
 const tabOption = {
-  // tabBarIcon: () => {
-  //   null;
-  // },
   tabBarLabelStyle: {
     fontWeight: "700",
     fontSize: 40,

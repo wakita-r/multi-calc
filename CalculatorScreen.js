@@ -1,18 +1,29 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Box, Menu } from "native-base";
 import Button from "./Button";
 import Decimal from "decimal.js";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-class calcHistory {}
+class History {
+  constructor(formula, result) {
+    this.formula = formula;
+    this.result = result;
+  }
+}
 
 const Calculator = () => {
   const [historyList, setHistory] = useState([]); // 入力の履歴
-  const [formulaText, setFormulaText] = useState(null); // 計算式のテキスト
+  const [formulaText, setFormulaText] = useState(""); // 計算式のテキスト
 
   const [value, setValue] = useState("0"); // 現在の入力値
   const [operator, setOperator] = useState(null); // 四則演算子
   const [prevValue, setPrevValue] = useState(null); // 前回の入力値
   const [isResult, setIsResult] = useState(false); // 計算結果
+
+  const addHistory = (history) => {
+    setHistory([...historyList, history]);
+  };
 
   // 数値押下時イベント
   const handleNumber = (number) => {
@@ -56,12 +67,14 @@ const Calculator = () => {
   // イコール押下時イベント
   const handleEqual = () => {
     const nextValue = parseFloat(value);
-    let result = calcFormula(prevValue, nextValue, operator);
+    if (operator !== null) {
+      let result = calcFormula(prevValue, nextValue, operator);
 
-    setValue(result.toString());
-    setIsResult(true);
-    setPrevValue(null);
-    setOperator(null);
+      setValue(result.toString());
+      setIsResult(true);
+      setPrevValue(null);
+      setOperator(null);
+    }
   };
 
   // 計算ロジック
@@ -91,6 +104,8 @@ const Calculator = () => {
 
     const formula = `${decimalValue1.toNumber()} ${operator} ${decimalValue2.toNumber()} =`;
     setFormulaText(formula);
+    const history = new History(`${formula} ${calcResult}`);
+    addHistory(history);
     return calcResult;
   };
 
@@ -111,6 +126,10 @@ const Calculator = () => {
 
   // 小数点押下時イベント
   const handleDecimal = () => {
+    // 計算結果が式として表示されている場合は計算式を削除する
+    if (formulaText.charAt(formulaText.length - 1) === "=") {
+      setFormulaText("");
+    }
     if (!value.includes(".")) {
       setValue(value + ".");
     }
@@ -118,15 +137,11 @@ const Calculator = () => {
 
   // 「+/-」押下時イベント
   const handlePlusMinus = () => {
-    setValue((parseFloat(value) * -1).toString());
-  };
-
-  // 計算式のテキストを取得
-  const getFormulaText = () => {
-    if (prevValue === null || operator === null) {
-      return "";
+    // 計算結果が式として表示されている場合は計算式を削除する
+    if (formulaText.charAt(formulaText.length - 1) === "=") {
+      setFormulaText("");
     }
-    return `${prevValue} ${operator}`;
+    setValue((parseFloat(value) * -1).toString());
   };
 
   const getValueString = () => {
@@ -135,11 +150,46 @@ const Calculator = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.result}>
-        <Text style={styles.formulaText}>{formulaText}</Text>
-      </View>
-      <View style={styles.result}>
-        <Text style={styles.resultText}>{getValueString()}</Text>
+      <View style={{ flexDirection: "row", height: 90 }}>
+        <View style={{ flexBasis: "15%" }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box alignItems="center">
+              <Menu
+                w="190"
+                trigger={(triggerProps) => {
+                  return (
+                    <Pressable
+                      accessibilityLabel="More options menu"
+                      {...triggerProps}
+                    >
+                      <Ionicons name="time-outline" size={60} color={"white"} />
+                      {/* <Text style={{ fontSize: 50, color: "white" }}>≡</Text> */}
+                    </Pressable>
+                  );
+                }}
+              >
+                {historyList.map((history, index) => (
+                  <Menu.Item key={index}>{history.formula}</Menu.Item>
+                ))}
+              </Menu>
+            </Box>
+          </View>
+        </View>
+        <View style={{ flexBasis: "85%" }}>
+          <View style={{ ...styles.result }}>
+            <Text style={styles.formulaText}>{formulaText}</Text>
+          </View>
+          <View style={styles.result}>
+            <Text style={styles.resultText}>{getValueString()}</Text>
+          </View>
+        </View>
       </View>
       <View style={styles.buttonRow}>
         <Button
@@ -204,6 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
     paddingRight: 20,
+    width: "100%",
   },
   resultText: {
     fontSize: 40,
