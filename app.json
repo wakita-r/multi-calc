@@ -1,22 +1,21 @@
 {
   "expo": {
-    "name": "multi-calc",
-    "slug": "multi-calc",
+    "name": "Parallel Calclator",
+    "slug": "parallel-calclator",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/calc.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.salad.multicalc"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.salad.parallelcalc",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
