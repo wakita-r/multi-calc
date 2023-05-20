@@ -191,54 +191,72 @@ const Calculator = () => {
           </View>
         </View>
       </View>
-      <View style={styles.buttonRow}>
-        <Button
-          title="AC"
-          color="#aaaaaa"
-          textColor="#000000"
-          onPress={handleClear}
-        />
-        <Button
-          title="+/-"
-          color="#aaaaaa"
-          textColor="#000000"
-          onPress={handlePlusMinus}
-        />
-        <Button
-          title="%"
-          color="#aaaaaa"
-          textColor="#000000"
-          onPress={handlePercentage}
-        />
-        <Button title="÷" color="#ff8800" onPress={() => handleOperator("÷")} />
-      </View>
-      <View style={styles.buttonRow}>
-        <Button title="7" color="#444444" onPress={() => handleNumber("7")} />
-        <Button title="8" color="#444444" onPress={() => handleNumber("8")} />
-        <Button title="9" color="#444444" onPress={() => handleNumber("9")} />
-        <Button title="×" color="#ff8800" onPress={() => handleOperator("×")} />
-      </View>
-      <View style={styles.buttonRow}>
-        <Button title="4" color="#444444" onPress={() => handleNumber("4")} />
-        <Button title="5" color="#444444" onPress={() => handleNumber("5")} />
-        <Button title="6" color="#444444" onPress={() => handleNumber("6")} />
-        <Button title="-" color="#ff8800" onPress={() => handleOperator("-")} />
-      </View>
-      <View style={styles.buttonRow}>
-        <Button title="1" color="#444444" onPress={() => handleNumber("1")} />
-        <Button title="2" color="#444444" onPress={() => handleNumber("2")} />
-        <Button title="3" color="#444444" onPress={() => handleNumber("3")} />
-        <Button title="+" color="#ff8800" onPress={() => handleOperator("+")} />
-      </View>
-      <View style={styles.buttonRow}>
-        <Button
-          title="0"
-          color="#444444"
-          isZeroButton={true}
-          onPress={() => handleNumber("0")}
-        />
-        <Button title="." color="#444444" onPress={handleDecimal} />
-        <Button title="=" color="#ff8800" onPress={handleEqual} />
+      <View style={{ height: 460 }}>
+        <View style={styles.buttonRow}>
+          <Button
+            title="AC"
+            color="#aaaaaa"
+            textColor="#000000"
+            onPress={handleClear}
+          />
+          <Button
+            title="+/-"
+            color="#aaaaaa"
+            textColor="#000000"
+            onPress={handlePlusMinus}
+          />
+          <Button
+            title="%"
+            color="#aaaaaa"
+            textColor="#000000"
+            onPress={handlePercentage}
+          />
+          <Button
+            title="÷"
+            color="#ff8800"
+            onPress={() => handleOperator("÷")}
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <Button title="7" color="#444444" onPress={() => handleNumber("7")} />
+          <Button title="8" color="#444444" onPress={() => handleNumber("8")} />
+          <Button title="9" color="#444444" onPress={() => handleNumber("9")} />
+          <Button
+            title="×"
+            color="#ff8800"
+            onPress={() => handleOperator("×")}
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <Button title="4" color="#444444" onPress={() => handleNumber("4")} />
+          <Button title="5" color="#444444" onPress={() => handleNumber("5")} />
+          <Button title="6" color="#444444" onPress={() => handleNumber("6")} />
+          <Button
+            title="-"
+            color="#ff8800"
+            onPress={() => handleOperator("-")}
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <Button title="1" color="#444444" onPress={() => handleNumber("1")} />
+          <Button title="2" color="#444444" onPress={() => handleNumber("2")} />
+          <Button title="3" color="#444444" onPress={() => handleNumber("3")} />
+          <Button
+            title="+"
+            color="#ff8800"
+            onPress={() => handleOperator("+")}
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <Button
+            title="0"
+            color="#444444"
+            isZeroButton={true}
+            onPress={() => handleNumber("0")}
+          />
+          <Button title="." color="#444444" onPress={handleDecimal} />
+          <Button title="=" color="#ff8800" onPress={handleEqual} />
+        </View>
       </View>
     </View>
   );
@@ -248,6 +266,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "black",
+    justifyContent: "flex-end",
   },
   result: {
     flex: 1,
